@@ -6,6 +6,7 @@
 <script language="JavaScript">
 var next_cursor=-1
 var objScript = document.createElement("script");
+var text = new Array();
 
 function jsonFeed(json) {
 	var next_cursor = json["next_cursor"];
@@ -13,20 +14,21 @@ function jsonFeed(json) {
 	var html = "";
 	for(var i = 0; i < users.length; i++) {
 		var elem = users[i];
-		var text = '<img src="' + elem["profile_image_url"] + '" width=48>';
-  		html += text;
+	 	text.push('<img src="' + elem["profile_image_url"] + '" width=48>' + '<p>' + elem["screen_name"] +'</p>');
+  		//html += text;
 	};
 
-	document.getElementById("list").innerHTML += html;
-
+	//document.getElementById("list").innerHTML += html;
+		
 		document.getElementsByTagName("head")[0].removeChild(objScript);
-		if (next_cursor>0) {	
+		if (next_cursor>0 && text.length<1001) {	
 			objScript = document.createElement("script");
-			objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name=mutuki&callback=jsonFeed&cursor="+ next_cursor;
+			objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name=dsHirano&callback=jsonFeed&cursor="+ next_cursor;
 			document.getElementsByTagName("head")[0].appendChild(objScript);
 		}
+	document.getElementById("list").innerHTML = text[102]	;
 }
-	objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name=mutuki&callback=jsonFeed&cursor=" + next_cursor;	
+	objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name=dsHirano&callback=jsonFeed&cursor=" + next_cursor;	
 	document.getElementsByTagName("head")[0].appendChild(objScript);
 </script>
 </head>
