@@ -49,8 +49,6 @@ function customValidate() {
 	var form = document.forms[0];
 	var name = form.screan_name;
 	name.setCustomValidity("");
-
-
 }
 </script>
 
@@ -124,6 +122,13 @@ input {
 	font-family:Helvetica;
 }
 
+h3 {
+}
+
+:invalid+.buttons {
+	display:none;
+}
+
 #screen_name {
 	height:1em;
 	padding:0.75em 0.5em;
@@ -149,14 +154,12 @@ input {
 	<p>HTML5 hack-a-thon edition</p>
 </header>
 <div>
-	<div id="input_name">
-		<input type="text" name="some_name" value="" id="screen_name" required pattern="^[0-9A-Za-z_-]+$">
-		<input type="button" name="some_name" value="Get User Info." id="some_name" class="buttons" onClick="javascript:init();">
-	</div>
 	<article id="list">
-		<!-- <h2>hoge</h2> -->
-		<!-- <input type="text" name="some_name" value="" id="screen_name"> -->
-		<!-- <input type="button" name="some_name" value="Get User Info." id="some_name" class="buttons"> -->
+		<form>
+		<input type="text" name="some_name" value="" id="screen_name" required pattern="^[0-9A-Za-z_-]+$">
+		<input type="button" name="some_name" value="Get User Info." id="some_name" class="buttons" onClick="this.form.checkValidity()&&init();">
+		<h3>Input your twitter's screen name!</h3>
+		</form>
 	</article>
 </div>
 <footer></footer>
