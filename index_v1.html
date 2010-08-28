@@ -39,8 +39,9 @@ function jsonFeed(json) {
 	}
 }
 
-function init() {
+function init() {	
 	screen_name = document.getElementById("screen_name").value;
+	document.getElementById("list").innerHTML = "<p>Now loading...</p>";
 	objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name="+screen_name+"&callback=jsonFeed&cursor=" + next_cursor;	
 	document.getElementsByTagName("head")[0].appendChild(objScript);
 }
@@ -126,7 +127,7 @@ h3 {
 }
 
 :invalid+.buttons {
-	display:none;
+	opacity:0;
 }
 
 #screen_name {
@@ -135,12 +136,17 @@ h3 {
 	border:1px solid rgb(200,200,200);
 }
 
+.text {
+	width:10em;
+}
+
 .buttons {
 	height:3em;
 	padding:0.9em;
 	border:1px solid rgb(200,255,200);
 	-webkit-border-radius:8px;
 	background:rgb(200,255,200);
+	-webkit-transition:opacity .5s linear;
 }
 
 </style>
@@ -156,7 +162,7 @@ h3 {
 <div>
 	<article id="list">
 		<form>
-		<input type="text" name="some_name" value="" id="screen_name" required pattern="^[0-9A-Za-z_-]+$">
+		<input type="text" name="some_name" value="" id="screen_name" required pattern="^[0-9A-Za-z_-]+$" class="text">
 		<input type="button" name="some_name" value="Get User Info." id="some_name" class="buttons" onClick="this.form.checkValidity()&&init();">
 		<h3>Input your twitter's screen name!</h3>
 		</form>
