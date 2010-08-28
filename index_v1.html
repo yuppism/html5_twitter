@@ -19,7 +19,7 @@ function jsonFeed(json) {
 
 	for(var i = 0; i < users.length; i++) {
 		var elem = users[i];
-	 	text.push('<img src="' + elem["profile_image_url"] + '" width=128>' + '<p>' + elem["screen_name"] +'</p>');
+	 	text.push('<img src="' + elem["profile_image_url"] + '" width=128>' + '<h2>' + elem["screen_name"] +'</h2>');
 	};
 	document.getElementsByTagName("head")[0].removeChild(objScript);
 	if (next_cursor>0 && text.length<1000) {	
@@ -41,7 +41,7 @@ function jsonFeed(json) {
 
 function init() {	
 	screen_name = document.getElementById("screen_name").value;
-	document.getElementById("list").innerHTML = "<p>Now loading...</p>";
+	document.getElementById("list").innerHTML = "<h3>Now loading...</h3>";
 	objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name="+screen_name+"&callback=jsonFeed&cursor=" + next_cursor;	
 	document.getElementsByTagName("head")[0].appendChild(objScript);
 }
@@ -83,6 +83,11 @@ h1 {
 	color:white;
 	margin:0px;
 	float:left;
+}
+
+h2 {
+	margin:0px;
+	font-size:20pt;
 }
 
 header p {
@@ -137,7 +142,7 @@ h3 {
 }
 
 .text {
-	width:10em;
+	width:80px;
 }
 
 .buttons {
