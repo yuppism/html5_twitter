@@ -1,0 +1,39 @@
+<html>
+
+<head>
+<title>JSONP sample</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<script language="JavaScript">
+var next_cursor=-1
+var objScript = document.createElement("script");
+
+function jsonFeed(json) {
+	var next_cursor = json["next_cursor"];
+	var users = json["users"];
+	var html = "";
+	for(var i = 0; i < users.length; i++) {
+		var elem = users[i];
+		var text = '<img src="' + elem["profile_image_url"] + '" width=48>';
+  		html += text;
+	};
+
+	document.getElementById("list").innerHTML += html;
+
+		document.getElementsByTagName("head")[0].removeChild(objScript);
+		if (next_cursor>0) {	
+			objScript = document.createElement("script");
+			objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name=mutuki&callback=jsonFeed&cursor="+ next_cursor;
+			document.getElementsByTagName("head")[0].appendChild(objScript);
+		}
+}
+	objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name=mutuki&callback=jsonFeed&cursor=" + next_cursor;	
+	document.getElementsByTagName("head")[0].appendChild(objScript);
+</script>
+</head>
+
+<body onload="">
+<h1>データサンプル</h1>
+<h2>とりあえずアレイにしないで全部表示テスト</h2>
+<div id="list"></div> 
+</body>
+</html>
