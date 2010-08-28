@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Raffle tool for your twitter follower at HTML5 hackathon version.</title>
+
+<script type="text/javascript" charset="utf-8">
+var next_cursor=-1
+var objScript = document.createElement("script");
+var text = new Array();
+var cnt;
+
+function jsonFeed(json) {
+	var next_cursor = json["next_cursor"];
+	var users = json["users"];
+	var html = "";
+	for(var i = 0; i < users.length; i++) {
+		var elem = users[i];
+	 	text.push('<img src="' + elem["profile_image_url"] + '" width=128>' + '<p>' + elem["screen_name"] +'</p>');
+	};
+	document.getElementsByTagName("head")[0].removeChild(objScript);
+	if (next_cursor>0 && text.length<1000) {	
+		objScript = document.createElement("script");
+		objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name=mutuki&callback=jsonFeed&cursor="+ next_cursor;
+		document.getElementsByTagName("head")[0].appendChild(objScript);
+	} else {
+		var countdown = 120;
+		var timer = setInterval(function(){ 
+			cnt = Math.floor(Math.random()*text.length)	;
+			document.getElementById("list").innerHTML = text[cnt];
+			countdown--;
+			if (countdown == 0) {
+			clearInterval(timer);	
+			}
+		},70);
+	}
+}
+	objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name=mutuki&callback=jsonFeed&cursor=" + next_cursor;	
+	document.getElementsByTagName("head")[0].appendChild(objScript);
+</script>
+
+<style type="text/css" media="screen">
+
+body {
+	background:rgb(100,200,255);
+	font:normal normal normal 8pt/4em Helvetica;
+}
+
+@font-face {
+	font-family: 'PicoBlackAlRegular';
+	src: url('font/picobla_-webfont.eot');
+	src: local('☺'), url('font/picobla_-webfont.woff') format('woff'), url('font/picobla_-webfont.ttf') format('truetype'), url('font/picobla_-webfont.svg#webfontbJCXUSJ0') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+header {
+	display:block;
+	width:300px;
+	height:40px;
+	margin:20px auto;
+/*	background: rgb(200,255,200);*/
+	-webkit-border-radius: 8px;
+}
+
+h1 {
+	font:normal normal normal 30pt/1em 'PicoBlackAlRegular';
+	text-shadow:rgb(255,255,255) 0px 0px 2px;
+	color:white;
+	margin:0px;
+	float:left;
+}
+
+header p {
+	margin:0px 0px 0px 160px;
+	font:normal normal normal 8pt/4em Helvetica;
+	color:rgb(255,255,255);
+}
+
+div:before {
+	content:"\00a0";
+	font-size:0px;
+	line-height:0%;
+	width:0px;
+	position:absolute;
+	margin:-15px 0px 0px 50px;
+	border-bottom:15px solid rgba(255,255,255,1);
+	border-left:15px solid rgba(255,255,255,0);
+	border-right:15px solid rgba(255,255,255,0);
+}
+
+div {
+	width:300px;
+	height:300px;
+	margin:0px auto;
+	background:rgb(255,255,255);
+	-webkit-border-radius:8px;
+}
+
+article {
+	width:250px;
+	margin:0px auto;
+	padding:50px 0px;
+	text-align:center;
+/*	background:red;*/
+}
+
+input {
+	font-family:Helvetica;
+}
+
+#screen_name {
+	height:1em;
+	padding:0.75em 0.5em;
+	border:1px solid rgb(200,200,200);
+}
+
+.buttons {
+	height:3em;
+	padding:0.9em;
+	border:1px solid rgb(200,255,200);
+	-webkit-border-radius:8px;
+	background:rgb(200,255,200);
+}
+
+</style>
+	
+</head>
+
+<body id="" onload="">
+
+<header>
+	<h1 id="fmtwitt">FMtwitt</h1>
+	<p>HTML5 hack-a-thon edition</p>
+</header>
+<div>
+	<article id="list">
+		<!-- <h2>hoge</h2> -->
+		<!-- <input type="text" name="some_name" value="" id="screen_name"> -->
+		<!-- <input type="button" name="some_name" value="Get User Info." id="some_name" class="buttons"> -->
+	</article>
+</div>
+<footer></footer>
+	
+</body>
+
+</html>
+
