@@ -10,11 +10,13 @@ var next_cursor=-1
 var objScript = document.createElement("script");
 var text = new Array();
 var cnt;
+var screen_name;
 
 function jsonFeed(json) {
 	var next_cursor = json["next_cursor"];
 	var users = json["users"];
 	var html = "";
+
 	for(var i = 0; i < users.length; i++) {
 		var elem = users[i];
 	 	text.push('<img src="' + elem["profile_image_url"] + '" width=128>' + '<p>' + elem["screen_name"] +'</p>');
@@ -22,7 +24,7 @@ function jsonFeed(json) {
 	document.getElementsByTagName("head")[0].removeChild(objScript);
 	if (next_cursor>0 && text.length<1000) {	
 		objScript = document.createElement("script");
-		objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name=mutuki&callback=jsonFeed&cursor="+ next_cursor;
+		objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name="+screen_name+"&callback=jsonFeed&cursor="+ next_cursor;
 		document.getElementsByTagName("head")[0].appendChild(objScript);
 	} else {
 		var countdown = 120;
@@ -36,8 +38,20 @@ function jsonFeed(json) {
 		},70);
 	}
 }
-	objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name=mutuki&callback=jsonFeed&cursor=" + next_cursor;	
+
+function init() {
+	screen_name = document.getElementById("screen_name").value;
+	objScript.src="http://api.twitter.com/1/statuses/followers.json?screen_name="+screen_name+"&callback=jsonFeed&cursor=" + next_cursor;	
 	document.getElementsByTagName("head")[0].appendChild(objScript);
+}
+
+function customValidate() {
+	var form = document.forms[0];
+	var name = form.screan_name;
+	name.setCustomValidity("");
+
+
+}
 </script>
 
 <style type="text/css" media="screen">
@@ -50,7 +64,7 @@ body {
 @font-face {
 	font-family: 'PicoBlackAlRegular';
 	src: url('font/picobla_-webfont.eot');
-	src: local('☺'), url('font/picobla_-webfont.woff') format('woff'), url('font/picobla_-webfont.ttf') format('truetype'), url('font/picobla_-webfont.svg#webfontbJCXUSJ0') format('svg');
+	src: local('?'), url('font/picobla_-webfont.woff') format('woff'), url('font/picobla_-webfont.ttf') format('truetype'), url('font/picobla_-webfont.svg#webfontbJCXUSJ0') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -135,6 +149,10 @@ input {
 	<p>HTML5 hack-a-thon edition</p>
 </header>
 <div>
+	<div id="input_name">
+		<input type="text" name="some_name" value="" id="screen_name" required pattern="^[0-9A-Za-z_-]+$">
+		<input type="button" name="some_name" value="Get User Info." id="some_name" class="buttons" onClick="javascript:init();">
+	</div>
 	<article id="list">
 		<!-- <h2>hoge</h2> -->
 		<!-- <input type="text" name="some_name" value="" id="screen_name"> -->
