@@ -1,29 +1,27 @@
-<!DOCTYPE HTML>
-<html>
-
-<head>
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-	<title>Raffle tool for your twitter follower at HTML5 hackathon version.</title>
-
-<script type="text/javascript" charset="utf-8">
-	
-</script>
-
-<style type="text/css" media="screen">
-
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html;"/> 
+<meta http-equiv="Content-Language" content="ja" /> 
+<meta http-equiv="Content-Style-Type" content="text/css" /> 
+<meta http-equiv="Content-Script-Type" content="text/javascript" /> 
+<title>Twitter Lottery </title> 
+<!-- <meta charset="UTF-8"> -->
+<style type="text/css" media="screen"> 
+ 
 body {
 	background:rgb(100,200,255);
 	font:normal normal normal 8pt/4em Helvetica;
 }
-
+ 
 @font-face {
 	font-family: 'PicoBlackAlRegular';
 	src: url('font/picobla_-webfont.eot');
-	src: local('☺'), url('font/picobla_-webfont.woff') format('woff'), url('font/picobla_-webfont.ttf') format('truetype'), url('font/picobla_-webfont.svg#webfontbJCXUSJ0') format('svg');
+	src: local('?'), url('font/picobla_-webfont.woff') format('woff'), url('font/picobla_-webfont.ttf') format('truetype'), url('font/picobla_-webfont.svg#webfontbJCXUSJ0') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
-
+ 
 header {
 	display:block;
 	width:300px;
@@ -32,7 +30,7 @@ header {
 /*	background: rgb(200,255,200);*/
 	-webkit-border-radius: 8px;
 }
-
+ 
 h1 {
 	font:normal normal normal 30pt/1em 'PicoBlackAlRegular';
 	text-shadow:rgb(255,255,255) 0px 0px 2px;
@@ -40,14 +38,14 @@ h1 {
 	margin:0px;
 	float:left;
 }
-
+ 
 header p {
 	margin:0px 0px 0px 160px;
 	font:normal normal normal 8pt/4em Helvetica;
 	color:rgb(255,255,255);
 }
-
-div:before {
+ 
+#custom_div:before {
 	content:"\00a0";
 	font-size:0px;
 	line-height:0%;
@@ -58,32 +56,32 @@ div:before {
 	border-left:15px solid rgba(255,255,255,0);
 	border-right:15px solid rgba(255,255,255,0);
 }
-
-div {
+ 
+#custom_div {
 	width:300px;
 	height:300px;
 	margin:0px auto;
 	background:rgb(255,255,255);
 	-webkit-border-radius:8px;
 }
-
+ 
 article {
 	width:250px;
 	margin:0px auto;
 	padding:50px 0px;
 /*	background:red;*/
 }
-
+ 
 input {
 	font-family:Helvetica;
 }
-
+ 
 #screen_name {
 	height:1em;
 	padding:0.75em 0.5em;
 	border:1px solid rgb(200,200,200);
 }
-
+ 
 .buttons {
 	height:3em;
 	padding:0.9em;
@@ -91,27 +89,184 @@ input {
 	-webkit-border-radius:8px;
 	background:rgb(200,255,200);
 }
+ 
+</style> 
+<!-- 一様追加 -->
+<!--[if IE]><script src="import_js/html5jp/excanvas.js"></script><![endif]-->
+ 
+<script type="text/javascript" src="import_js/html5jp/progress.js"></script>  
+<script type="text/javascript">
+	//Twitter id 格納用
+	var twitter_id; 
 
-</style>
+	//Canvasのｘ座標の移動値格納用
+	var x = 50;
+
 	
-</head>
+	//当たった時の文字のアニメーション用：まだ未実装
+	 var width=20;
+	 (function () {
+window.onload = function() {
+	var p = {
+	 height: 16,
+		to: 0
+	};
+	var o = new html5jp.progress("sample_progress", p);
+	if( ! o ) { return; }
+	
+	o.draw();
+//プログレスバーの値を増やすメソッド
+	document.getElementById("incr").onclick = function() {
+		o.incr(10);
+		if(o.get_val() >= 100){
+		//プログレスバーが100になった場合
+		//プログレスバーを消す
+		document.getElementById("sample_progress").style.display ="none";
+		//プログレス増のボタンを消す。
+		document.getElementById("incr").style.display ="none";
+		document.getElementById("progress_text").style.display ="none";
+		//抽選開始ボタン表示
+        document.getElementById("start_lottery_text").style.display ="";
+		document.getElementById("start_lottery").style.display ="";
 
-<body id="" onload="">
 
-<header>
-	<h1 id="fmtwitt">FMtwitt</h1>
-	<p>HTML5 hack-a-thon edition</p>
+		}
+	};
+	//抽選開始メソッド
+		document.getElementById("start_lottery").onclick = function() {
+				//抽選開始ボタン非表示
+        document.getElementById("start_lottery_text").style.display ="none";
+		document.getElementById("start_lottery").style.display ="none";
+        //抽選結果の文言を非表示
+        document.getElementById('text-stroke-example').style.display ="none";
+		//プログレスバーを消す
+		document.getElementById("sample_progress").style.display ="none";
+		//プログレス増のボタンを消す。
+		document.getElementById("incr").style.display ="none";
+		document.getElementById("progress_text").style.display ="none";
+
+		//抽選開始ボタン非表示
+        document.getElementById("start_lottery_text").style.display ="none";
+		document.getElementById("start_lottery").style.display ="none";
+
+		//ここでアニメーションが必要？？
+
+
+
+        //抽選結果の文言を表示
+        document.getElementById('text-stroke-example').style.display ="";
+			
+	}
+	//初期化メソッド
+	document.getElementById("reset_data").onclick = function() {
+		o.reset();
+		//抽選開始ボタン非表示
+        document.getElementById("start_lottery_text").style.display ="none";
+		document.getElementById("start_lottery").style.display ="none";
+        //抽選結果の文言を非表示
+        document.getElementById('text-stroke-example').style.display ="none";
+		//プログレスバーを消す
+		document.getElementById("sample_progress").style.display ="none";
+		//プログレス増のボタンを消す。
+		document.getElementById("incr").style.display ="none";
+		document.getElementById("progress_text").style.display ="none";
+		//ボタンを押下可にする
+        document.getElementById("button_iD").disabled = false;
+        document.getElementById("twitter_iD").disabled = false;
+	};
+		//データ取得用メソッド
+    document.getElementById("button_iD").onclick = function() {
+       
+        var ctx = document.getElementById('twitter_iD')
+        //ボタンを押下不可にする
+        document.getElementById("button_iD").disabled = true;
+        document.getElementById("twitter_iD").disabled = true;
+        
+        //twitter id を保持する。
+        twitter_id = ctx.value;
+		
+		//抽選開始ボタン非表示
+        document.getElementById("start_lottery_text").style.display ="none";
+		document.getElementById("start_lottery").style.display ="none";
+        
+        //抽選結果の文言を非表示
+        document.getElementById('text-stroke-example').style.display ="none";
+		
+		//プログレスバーを消す
+		document.getElementById("sample_progress").style.display ="none";
+		
+		//プログレス増のボタンを消す。
+		document.getElementById("incr").style.display ="none";
+		document.getElementById("progress_text").style.display ="none";
+        
+		//プログレスバーを表示
+		document.getElementById("sample_progress").style.display ="";
+		
+		//プログレス増のボタンを表示。
+		document.getElementById("incr").style.display ="";
+		document.getElementById("progress_text").style.display ="";
+
+
+	};
+
+	
+
+
+};
+})();
+	//canvas描画メソッド
+	var canvasfunc = function(){
+	var ctx = document.getElementById('sample').getContext('2d');
+	    x += 5;
+	    ctx.clearRect(0,0,200,200);
+	    ctx.beginPath();
+	    ctx.arc(x, 50, 30, 0, Math.PI*2, false);
+	    ctx.fill();
+	    if (x > 150) {
+	        x = 50;
+	    }
+	};
+//当たっト時の文言にアニメーションぽくできたらいいな修正::予定メソッド(未実装)
+   var changeTextfunc = function() {
+ 		if(width>50){
+ 			width=1;
+ 			}
+        width=(width*0.25).toFixed(2);
+        document.getElementById('text-stroke-example').style.webkitTextStrokeWidth = width + 'px';
+        //document.getElementById('text-stroke-value').innerHTML = width;
+        width = width+2;
+      };
+      	//Canvasを描画するためのインターヴァルメソッド
+	setInterval(canvasfunc, 100);
+ 
+</script> 
+</head> 
+<body>
+<header> 
+	<h1 id="fmtwitt">FMtwitt</h1> 
+	<p>HTML5 hack-a-thon edition</p> 
 </header>
-<div>
-	<article>
-		<h2>hoge</h2>
-		<input type="text" name="some_name" value="" id="screen_name">
-		<input type="button" name="some_name" value="Get User Info." id="some_name" class="buttons">
-	</article>
-</div>
-<footer></footer>
+<div id ="custom_div"> 
+	<article> 
+            <div id="text-stroke-example" class="example" style="display:none"> 
+              当ったり～～（●＾o＾●）
+            </div>
+            
+            <div id="sample_progress" style="display:none"></div> 
+			<p id="progress_text" style="display:none">データ取得中</p>
+			<button id="incr" style="display:none">progress増</button>
+			<p id="start_lottery_text" style="display:none">押して～！！</p>
+			<button id="start_lottery" style="display:none">抽選を開始</button>
+    Twitter ID:<input name="text" id='twitter_iD' size="20" type="text"  placeholder="input Twitter ID">
+
+    <button  id="button_iD">データ取得</button>
+    <button id="reset_data" style="display:">初期化</button>
+    <br>
+<canvas id='sample' width="200" height="200"></canvas>
+
+</article> 
+</div> 
 	
-</body>
 
-</html>
-
+</body> 
+</html> 
